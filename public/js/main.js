@@ -85,7 +85,7 @@ function initSocket() {
 
   window.addEventListener('deviceorientation', function (event) {
     var g = map(event.gamma, -50, 50, -1, 1) | 0;
-    // var g = event.gamma | 0;
+    /*// var g = event.gamma | 0;
     socket.send(JSON.stringify({
       eventName: 'orientation_msg',
       data: {
@@ -94,7 +94,7 @@ function initSocket() {
         raw: event.gamma,
         pin: pin
       }
-    }));
+    }));*/
   }, false);
 
   var player = $('.player'),
@@ -125,14 +125,7 @@ function init() {
       'video': true,
       'audio': false
     }, function(stream) {
-      var video = document.createElement('video');
-      video.id = 'you';
-      document.body.appendChild(video);
-      document.getElementById('you').src = URL.createObjectURL(stream);
-      document.getElementById('you').play();
-      // videos.push(document.getElementById('you'));
-      // rtc.attachStream(stream, 'local');
-      // subdivideVideos();
+      rtc.attachStream(stream, 'local');
     });
   } else {
     // TODO grab pic from the camera
@@ -142,15 +135,7 @@ function init() {
   rtc.on('add remote stream', function(stream, socketId) {
     console.log("ADDING REMOTE STREAM...");
     // var clone = cloneVideo('you', socketId);
-    window.video = video = document.createElement('video');
-    // rtc.attachStream(stream, video);
-    video.src = window.URL.createObjectURL(stream);
-    video.autoplay = true;
-    video.id = 'remote' + socketId;
-    video.play();
-
-    console.log(video.readyState);
-    document.body.appendChild(video);
+    rtc.attachStream(stream, "remote");
 
     // if (video.readyState === 4) {
     //   renderVideo(video);
